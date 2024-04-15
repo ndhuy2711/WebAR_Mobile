@@ -11,7 +11,6 @@
       let params = new URLSearchParams(document.location.search);
       let tokenSketchfab = params.get("sf");
       let uuid = params.get("uu");
-      console.log("abc", tokenSketchfab, uuid);
       axios
         .get(`https://api.sketchfab.com/v3/models/${uuid}/download`, {
           headers: {
@@ -19,14 +18,15 @@
           },
         })
         .then(function (res) {
-          let glb = res.glb.url;
-          let usdz = res.glb.usdz;
+          console.log("res", res)
+          let glb = res.data.glb.url;
+          let usdz = res.data.usdz.url;
+          console.log(glb, usdz);
           const modelViewer = document.getElementById("model");
           modelViewer.setAttribute("src", glb);
           modelViewer.setAttribute("ios-src", usdz);
         })
         .catch(function (error) {
-          // xử trí khi bị lỗi
           console.log(error);
         });
     </script>
