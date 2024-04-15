@@ -2,6 +2,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script
       type="module"
       src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"
@@ -11,18 +12,22 @@
       let tokenSketchfab = params.get("sf");
       let uuid = params.get("uu");
       console.log("abc", tokenSketchfab, uuid);
-      fetch(`https://api.sketchfab.com/v3/models/${uuid}/download`),
-        {
-          method: "GET",
+      axios
+        .get(`https://api.sketchfab.com/v3/models/${uuid}/download`, {
           headers: {
-            Authorization: "Bearer 42vseLLWF0w2lPGeLBP4WGzwt4Avxz",
+            Authorization: `Bearer ${tokenSketchfab}`,
           },
-        }.then((res) => {
+        })
+        .then(function (res) {
           let glb = res.glb.url;
           let usdz = res.glb.usdz;
           const modelViewer = document.getElementById("model");
           modelViewer.setAttribute("src", glb);
           modelViewer.setAttribute("ios-src", usdz);
+        })
+        .catch(function (error) {
+          // xử trí khi bị lỗi
+          console.log(error);
         });
     </script>
     <title>AR Viewer</title>
