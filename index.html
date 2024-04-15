@@ -6,6 +6,25 @@
       type="module"
       src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"
     ></script>
+    <script>
+      let params = new URLSearchParams(document.location.search);
+      let tokenSketchfab = params.get("sf");
+      let uuid = params.get("uu");
+      console.log("abc", tokenSketchfab, uuid);
+      fetch(`https://api.sketchfab.com/v3/models/${uuid}/download`),
+        {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer 42vseLLWF0w2lPGeLBP4WGzwt4Avxz",
+          },
+        }.then((res) => {
+          let glb = res.glb.url;
+          let usdz = res.glb.usdz;
+          const modelViewer = document.getElementById("model");
+          modelViewer.setAttribute("src", glb);
+          modelViewer.setAttribute("ios-src", usdz);
+        });
+    </script>
     <title>AR Viewer</title>
     <style>
       #default-ar-button {
@@ -17,6 +36,7 @@
     <div style="width: 100%; height: 100%">
       <!-- Use it like any other HTML element -->
       <model-viewer
+        id="model"
         style="
           display: flex;
           align-items: center;
@@ -24,8 +44,8 @@
           width: inherit;
           height: inherit;
         "
-        src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"
-        ios-src="https://modelviewer.dev/shared-assets/models/Astronaut.usdz"
+        src=""
+        ios-src=""
         alt="A 3D model of an astronaut"
         ar
         auto-rotate
